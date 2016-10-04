@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.SystemClock;
@@ -119,5 +122,12 @@ public class Util {
 
         Log.d(TAG, "isChargerConnected " + isPlugged);
         return isPlugged;
+    }
+
+    public static String getRingtoneName(Context context, String uriString) {
+        Uri ringtoneUri = Uri.parse(uriString);
+        Ringtone ringtone = RingtoneManager.getRingtone(context, ringtoneUri);
+        String name = ringtone.getTitle(context);
+        return name;
     }
 }

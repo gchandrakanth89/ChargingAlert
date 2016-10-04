@@ -7,7 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.RingtoneManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Handler;
@@ -48,11 +48,14 @@ public class BatteryReceiverService extends Service {
                 builder.setTicker("Battery full");
                 builder.setContentText("Please disconnect the charger");
                 builder.setSmallIcon(R.drawable.ic_launcher);
+                builder.setSound(Uri.parse(PreferenceUtils.getNotificationToneUri(context)));
+                builder.setPriority(Notification.PRIORITY_HIGH);
+                builder.setLights(Color.RED, 500, 500);
 
-                Uri defaultAlarmtoneUri = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM);
-                builder.setSound(defaultAlarmtoneUri);
 
                 Notification notification = builder.build();
+
+                notification.flags = Notification.FLAG_INSISTENT;
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(100, notification);
