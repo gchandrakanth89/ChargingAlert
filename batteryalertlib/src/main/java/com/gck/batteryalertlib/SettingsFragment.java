@@ -1,4 +1,4 @@
-package com.gck.chargingalert;
+package com.gck.batteryalertlib;
 
 
 import android.content.SharedPreferences;
@@ -7,10 +7,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-
-import com.gck.batteryalertlib.BatteryAlertManager;
-import com.gck.batteryalertlib.PreferenceUtils;
-import com.gck.batteryalertlib.Util;
 
 
 /**

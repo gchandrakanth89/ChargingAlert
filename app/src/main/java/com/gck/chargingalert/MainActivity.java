@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.gck.batteryalertlib.BatteryAlertManager;
+import com.gck.batteryalertlib.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
