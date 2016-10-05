@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
         android:defaultValue="true"
-        android:key="enable"
+        android:key="pref_enable"
         android:title="Enable Battery Alarm"/>
 
     <PreferenceCategory
@@ -11,7 +11,7 @@
 
         <RingtonePreference
             android:defaultValue=""
-            android:key="key_notification"
+            android:key="pref_notification_tone"
             android:ringtoneType="all"
             android:showDefault="true"
             android:summary="@string/app_name"
@@ -28,7 +28,7 @@
             android:dialogTitle="Repeat frequency"
             android:entries="@array/pref_notification_frequency"
             android:entryValues="@array/pref_notification_frequency_values"
-            android:key="pref_notification_frequency"
+            android:key="pref_notification_repeat_count"
             android:title="Repeat frequency"
             />
 

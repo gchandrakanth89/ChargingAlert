@@ -50,10 +50,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     private void setPreferenceSummary() {
-        Preference notificationPref = findPreference("key_notification");
+        Preference notificationPref = findPreference(PreferenceUtils.KEY_NOTIFICATION_TONE);
         notificationPref.setSummary(Util.getRingtoneName(getActivity(), PreferenceUtils.getNotificationToneUri(getActivity())));
 
-        Preference pref_notification_frequency = findPreference("pref_notification_frequency");
+        Preference pref_notification_frequency = findPreference(PreferenceUtils.KEY_NOTIFICATION_REPEAT_COUNT);
         pref_notification_frequency.setSummary(Util.getFreqencySummery(getActivity()));
 
 
@@ -75,7 +75,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equalsIgnoreCase("enable")) {
+        if (key.equalsIgnoreCase(PreferenceUtils.KEY_ENABLE)) {
             boolean enable = sharedPreferences.getBoolean(key, true);
             BatteryAlertManager manager = BatteryAlertManager.getInstance();
             if (enable) {
