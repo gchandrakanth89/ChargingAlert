@@ -5,5 +5,34 @@
         android:key="enable"
         android:title="Enable Battery Alarm"/>
 
+    <PreferenceCategory
+        android:key="pref_key_notification_settings"
+        android:title="Notification Settings">
+
+        <RingtonePreference
+            android:defaultValue=""
+            android:key="key_notification"
+            android:ringtoneType="all"
+            android:showDefault="true"
+            android:summary="@string/app_name"
+            android:title="Notification tone"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notification_repeat"
+            android:title="Repeat Notification"
+            />
+        <ListPreference
+            android:defaultValue="2"
+            android:dependency="pref_notification_repeat"
+            android:dialogTitle="Repeat frequency"
+            android:entries="@array/pref_notification_frequency"
+            android:entryValues="@array/pref_notification_frequency_values"
+            android:key="pref_notification_frequency"
+            android:title="Repeat frequency"
+            />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

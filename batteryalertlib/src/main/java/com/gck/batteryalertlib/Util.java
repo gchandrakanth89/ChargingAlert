@@ -130,4 +130,19 @@ public class Util {
         String name = ringtone.getTitle(context);
         return name;
     }
+
+    public static String getFreqencySummery(Context context) {
+        int notificationFrequency = PreferenceUtils.getNotificationFrequency(context);
+        String notificationFrequencyStr = Integer.toString(notificationFrequency);
+        String[] frequencyValues = context.getResources().getStringArray(R.array.pref_notification_frequency_values);
+        String[] frequencyNames = context.getResources().getStringArray(R.array.pref_notification_frequency);
+
+        for (int i = 0; i < frequencyValues.length; i++) {
+            if (notificationFrequencyStr.equalsIgnoreCase(frequencyValues[i])) {
+                return frequencyNames[i];
+            }
+        }
+
+        return "";
+    }
 }

@@ -16,4 +16,15 @@ public class PreferenceUtils {
         String notificationPref = sharedPref.getString("key_notification", RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM).toString());
         return notificationPref;
     }
+
+    public static boolean isRepeatEnabled(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean("pref_notification_repeat", true);
+    }
+
+    public static int getNotificationFrequency(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref_notification_frequency = sharedPref.getString("pref_notification_frequency", "2");
+        return Integer.valueOf(pref_notification_frequency);
+    }
 }

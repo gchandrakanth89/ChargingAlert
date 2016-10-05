@@ -13,6 +13,7 @@ import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class BatteryReceiverService extends Service {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.d(TAG, "handleMessage");
             notificationShown = false;
             super.handleMessage(msg);
         }
@@ -61,7 +63,11 @@ public class BatteryReceiverService extends Service {
                 notificationManager.notify(100, notification);
 
                 notificationShown = true;
-                handler.sendEmptyMessageDelayed(1, 60 * 1000);
+                if (PreferenceUtils.isRepeatEnabled(context)) {
+                    int notificationFrequency = PreferenceUtils.getNotificationFrequency(context);
+                    Log.d(TAG, "Repeat enabled :: Frequency = " + notificationFrequency);
+                    handler.sendEmptyMessageDelayed(1, notificationFrequency * DateUtils.MINUTE_IN_MILLIS);
+                }
 
             }
 

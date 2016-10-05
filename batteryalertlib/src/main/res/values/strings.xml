@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">BatteryAlertLib</string>
+    <string name="notification_type_single">Single</string>
+    <string name="notification_type_multiple">Multiple</string>
+
+    <integer name="notification_type_single">1</integer>
+    <integer name="notification_type_multiple">2</integer>
+
+    <string-array name="pref_notification_frequency">
+        <item>Every 1 min</item>
+        <item>Every 2 min</item>
+        <item>Every 5 min</item>
+        <item>Every 10 min</item>
+        <item>Every 30 min</item>
+    </string-array>
+
+    <string-array name="pref_notification_frequency_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+    </string-array>
+
 </resources>
