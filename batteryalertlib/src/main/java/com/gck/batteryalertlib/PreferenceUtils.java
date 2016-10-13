@@ -15,6 +15,7 @@ public class PreferenceUtils {
     public static final String KEY_NOTIFICATION_TONE = "pref_notification_tone";
     public static final String KEY_REPEAT_NOTIFICATION = "pref_notification_repeat";
     public static final String KEY_NOTIFICATION_REPEAT_COUNT = "pref_notification_repeat_count";
+    public static final String KEY_NOTIFICATION_VIBRATION = "pref_notification_vibration";
 
     public static String getNotificationToneUri(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -31,5 +32,10 @@ public class PreferenceUtils {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String pref_notification_frequency = sharedPref.getString(KEY_NOTIFICATION_REPEAT_COUNT, "2");
         return Integer.valueOf(pref_notification_frequency);
+    }
+
+    public static boolean isVibrate(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(KEY_NOTIFICATION_VIBRATION, false);
     }
 }

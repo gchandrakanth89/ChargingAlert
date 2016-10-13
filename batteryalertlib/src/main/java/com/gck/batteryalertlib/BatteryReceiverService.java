@@ -169,6 +169,12 @@ public class BatteryReceiverService extends Service {
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setLights(Color.RED, 500, 500);
         addActionsForNotification(context, builder);
+
+        if (PreferenceUtils.isVibrate(context)) {
+            long[] i = {500, 500, 500, 500};
+            builder.setVibrate(i);
+        }
+
         Notification notification = builder.build();
         notification.flags = Notification.FLAG_INSISTENT;
 
