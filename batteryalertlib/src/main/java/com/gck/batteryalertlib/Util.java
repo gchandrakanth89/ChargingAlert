@@ -58,8 +58,7 @@ public class Util {
         int batteryLevel = getBatteryLevel();
         if (batteryLevel >= 98) {
             Log.d(TAG, "Battery percent above 98 :: Starting service");
-            Intent batteryService = new Intent(App.getInstance(), BatteryReceiverService.class);
-            App.getInstance().startService(batteryService);
+            BatteryReceiverService.startService(App.getInstance(), BatteryReceiverService.START_NORMAL);
             return;
         }
 

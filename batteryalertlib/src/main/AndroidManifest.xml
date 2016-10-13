@@ -18,8 +18,13 @@
         </receiver>
 
         <service android:name=".BatteryReceiverService"/>
-        <receiver android:name=".AlarmReceiver"/>
 
+        <receiver android:name=".AlarmReceiver"/>
+        <receiver
+            android:name=".NotificationActionReceiver"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
     </application>
 
 </manifest>
