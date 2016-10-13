@@ -8,12 +8,14 @@ import android.util.Log;
 
 public class Logger {
 
-    public static void d(String tag, String mesaage) {
-        Log.d(tag, mesaage);
+    private static final String LOG_TAG = "AlertTag";
+
+    public static void d(String tag, String message) {
+        Log.d(LOG_TAG, tag + ": " + message);
     }
 
-    public static void e(String tag, String mesaage) {
-        Log.e(tag, mesaage);
+    public static void e(String tag, String message) {
+        Log.e(LOG_TAG, tag + ": " + message);
     }
 
 

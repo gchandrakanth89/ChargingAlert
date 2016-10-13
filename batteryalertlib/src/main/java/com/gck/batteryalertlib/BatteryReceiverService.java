@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 public class BatteryReceiverService extends Service {
@@ -39,7 +38,7 @@ public class BatteryReceiverService extends Service {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.d(TAG, "handleMessage");
+            Logger.d(TAG, "handleMessage");
             notificationShown = false;
             super.handleMessage(msg);
         }
@@ -52,7 +51,7 @@ public class BatteryReceiverService extends Service {
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
             int batteryPct = (int) ((level / (float) scale) * 100);
-            Log.d(TAG, "Percent " + batteryPct);
+            Logger.d(TAG, "Percent " + batteryPct);
 
 
             if (batteryPct == 100 && !notificationShown) {
@@ -84,7 +83,7 @@ public class BatteryReceiverService extends Service {
         if (intent != null) {
             int serviceKey = intent.getIntExtra(SERVICE_KEY, START_NORMAL);
             if (serviceKey == START_NORMAL) {
-                Log.d(TAG, "Service started");
+                Logger.d(TAG, "Service started");
                 Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show();
 
                 if (!broadcastRegistered)
@@ -93,7 +92,7 @@ public class BatteryReceiverService extends Service {
             } else if (serviceKey == START_FOR_SNOOZE) {
                 handler.removeMessages(1);
                 int notificationFrequency = PreferenceUtils.getNotificationFrequency(this);
-                Log.d(TAG, "Repeat enabled :: Frequency = " + notificationFrequency);
+                Logger.d(TAG, "Repeat enabled :: Frequency = " + notificationFrequency);
                 handler.sendEmptyMessageDelayed(1, notificationFrequency * DateUtils.MINUTE_IN_MILLIS);
             } else if (serviceKey == START_FOR_DISMISS) {
                 stopSelf();
@@ -108,7 +107,7 @@ public class BatteryReceiverService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Service stopped");
+        Logger.d(TAG, "Service stopped");
         Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
 
         handler.removeMessages(1);
@@ -183,7 +182,7 @@ public class BatteryReceiverService extends Service {
         notificationShown = true;
         if (PreferenceUtils.isRepeatEnabled(context)) {
             int notificationFrequency = PreferenceUtils.getNotificationFrequency(context);
-            Log.d(TAG, "Repeat enabled :: Frequency = " + notificationFrequency);
+            Logger.d(TAG, "Repeat enabled :: Frequency = " + notificationFrequency);
             handler.sendEmptyMessageDelayed(1, notificationFrequency * DateUtils.MINUTE_IN_MILLIS);
         }
 

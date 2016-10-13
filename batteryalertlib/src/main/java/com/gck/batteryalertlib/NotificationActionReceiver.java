@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
 
@@ -24,13 +23,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         int requestCode = extras.getInt(KEY_REQUEST_CODE);
 
         if (requestCode == REQUEST_CODE_SNOOZE) {
-            Log.d(TAG,"Snooze");
+            Logger.d(TAG,"Snooze");
             BatteryReceiverService.startService(context, BatteryReceiverService.START_FOR_SNOOZE);
             return;
         }
 
         if (requestCode == REQUEST_CODE_DISMISS) {
-            Log.d(TAG,"Dismiss");
+            Logger.d(TAG,"Dismiss");
             BatteryReceiverService.startService(context, BatteryReceiverService.START_FOR_DISMISS);
             return;
         }

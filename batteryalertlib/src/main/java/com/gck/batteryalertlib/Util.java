@@ -12,7 +12,6 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.text.format.DateUtils;
-import android.util.Log;
 
 /**
  * Created by Pervacio on 27-09-2016.
@@ -57,12 +56,12 @@ public class Util {
 
         int batteryLevel = getBatteryLevel();
         if (batteryLevel >= 98) {
-            Log.d(TAG, "Battery percent above 98 :: Starting service");
+            Logger.d(TAG, "Battery percent above 98 :: Starting service");
             BatteryReceiverService.startService(App.getInstance(), BatteryReceiverService.START_NORMAL);
             return;
         }
 
-        Log.d(TAG, "Battery percent below 98 :: Scheduling alarm");
+        Logger.d(TAG, "Battery percent below 98 :: Scheduling alarm");
 
         AlarmManager alarmManager = (AlarmManager) App.getInstance().getSystemService(Context.ALARM_SERVICE);
 
@@ -106,7 +105,7 @@ public class Util {
 
         float batteryPct = (level / (float) scale) * 100;
 
-        Log.d(TAG, "Battery capacity " + batteryPct);
+        Logger.d(TAG, "Battery capacity " + batteryPct);
         return (int) batteryPct;
     }
 
@@ -122,7 +121,7 @@ public class Util {
             isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
         }
 
-        Log.d(TAG, "isChargerConnected " + isPlugged);
+        Logger.d(TAG, "isChargerConnected " + isPlugged);
         return isPlugged;
     }
 
