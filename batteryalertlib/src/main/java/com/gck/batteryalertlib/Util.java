@@ -115,6 +115,9 @@ public class Util {
         Intent intent = App.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         isPlugged = plugged == BatteryManager.BATTERY_PLUGGED_AC;
+        if (PreferenceUtils.isUSBAlertEnabled(App.getInstance())) {
+            isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_USB;
+        }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
         }

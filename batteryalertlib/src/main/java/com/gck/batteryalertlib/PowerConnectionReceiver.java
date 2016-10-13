@@ -19,10 +19,11 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action.equalsIgnoreCase(Intent.ACTION_POWER_CONNECTED)) {
-            Log.d(TAG, "Power connected");
-            Toast.makeText(context, "Power connected", Toast.LENGTH_LONG).show();
-
-            Util.scheduleAlarm();
+            if (Util.isChargerPlugged()) {
+                Util.scheduleAlarm();
+                Log.d(TAG, "Power connected");
+                Toast.makeText(context, "Power connected", Toast.LENGTH_LONG).show();
+            }
 
         } else if (action.equalsIgnoreCase(Intent.ACTION_POWER_DISCONNECTED)) {
             Log.d(TAG, "Power disconnected");

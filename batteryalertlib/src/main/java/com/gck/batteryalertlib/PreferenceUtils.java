@@ -12,15 +12,20 @@ import android.preference.PreferenceManager;
 public class PreferenceUtils {
 
     public static final String KEY_ENABLE = "pref_enable";
+    public static final String KEY_USB_ENABLE = "pref_usb_alert";
     public static final String KEY_NOTIFICATION_TONE = "pref_notification_tone";
     public static final String KEY_REPEAT_NOTIFICATION = "pref_notification_repeat";
     public static final String KEY_NOTIFICATION_REPEAT_COUNT = "pref_notification_repeat_count";
     public static final String KEY_NOTIFICATION_VIBRATION = "pref_notification_vibration";
 
+    public static boolean isUSBAlertEnabled(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(KEY_USB_ENABLE, false);
+    }
+
     public static String getNotificationToneUri(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String notificationPref = sharedPref.getString(KEY_NOTIFICATION_TONE, RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM).toString());
-        return notificationPref;
+        return sharedPref.getString(KEY_NOTIFICATION_TONE, RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM).toString());
     }
 
     public static boolean isRepeatEnabled(Context context) {
