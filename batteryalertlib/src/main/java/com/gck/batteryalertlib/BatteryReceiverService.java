@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.Toast;
 
 public class BatteryReceiverService extends Service {
@@ -163,7 +165,15 @@ public class BatteryReceiverService extends Service {
         builder.setContentTitle("Battery full");
         builder.setTicker("Battery full");
         builder.setContentText("Please disconnect the charger");
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.notification_small_icon);
+
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            builder.setLargeIcon(Icon.createWithResource(context, R.drawable.notification_large_icon));
+        } else {
+            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_icon));
+        }
+
         builder.setSound(Uri.parse(PreferenceUtils.getNotificationToneUri(context)));
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setLights(Color.RED, 500, 500);
@@ -175,7 +185,17 @@ public class BatteryReceiverService extends Service {
         }
 
         Notification notification = builder.build();
+
         notification.flags = Notification.FLAG_INSISTENT;
+
+        //Hide small icon from notification
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int smallIconViewId = getResources().getIdentifier("right_icon", "id", android.R.class.getPackage().getName());
+            if (smallIconViewId != 0) {
+                if (notification.headsUpContentView != null)
+                    notification.headsUpContentView.setViewVisibility(smallIconViewId, View.INVISIBLE);
+            }
+        }
 
         notificationManager.notify(100, notification);
 
