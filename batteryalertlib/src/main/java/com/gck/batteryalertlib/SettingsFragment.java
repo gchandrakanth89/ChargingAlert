@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 
 
@@ -41,10 +42,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
 
-        setPreferenceSummary();
+        setRingtonePreferenceSummary();
+        SwitchPreference prefIsEnabled = (SwitchPreference) findPreference(PreferenceUtils.KEY_ENABLE);
+        if (prefIsEnabled.isChecked()) {
+            BatteryAlertManager.getInstance().enable();
+        }
+
+
     }
 
-    private void setPreferenceSummary() {
+    private void setRingtonePreferenceSummary() {
         Preference notificationPref = findPreference(PreferenceUtils.KEY_NOTIFICATION_TONE);
         notificationPref.setSummary(Util.getRingtoneName(getActivity(), PreferenceUtils.getNotificationToneUri(getActivity())));
 
@@ -70,6 +77,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Logger.d(TAG, "onSharedPreferenceChanged " + key);
         if (key.equalsIgnoreCase(PreferenceUtils.KEY_ENABLE)) {
             boolean enable = sharedPreferences.getBoolean(key, true);
             BatteryAlertManager manager = BatteryAlertManager.getInstance();
@@ -78,8 +86,17 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             } else {
                 manager.disable();
             }
+            return;
         }
-        setPreferenceSummary();
+
+        if (key.equalsIgnoreCase(PreferenceUtils.KEY_USB_ENABLE)) {
+            /*This block will be entered if the the "Enable Battery Alarm" is enabled.
+            So here we just need to tell to BatteryAlertManager that usb preference is changed.*/
+            BatteryAlertManager.getInstance().enable();
+            return;
+        }
+
+        //setRingtonePreferenceSummary();
 
     }
 
