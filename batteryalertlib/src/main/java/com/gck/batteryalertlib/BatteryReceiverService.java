@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class BatteryReceiverService extends Service {
 
-    public static final String SERVICE_KEY = "service_key";
+    private static final String SERVICE_KEY = "service_key";
     public static final int START_NORMAL = 100;
     public static final int START_FOR_SNOOZE = 200;
     public static final int START_FOR_DISMISS = 300;
@@ -119,7 +119,7 @@ public class BatteryReceiverService extends Service {
         super.onDestroy();
     }
 
-    private void addActionsForNotification(Context context, Notification.Builder builder) {
+    private static void addActionsForNotification(Context context, Notification.Builder builder) {
         Intent snoozeIntent = new Intent(context, NotificationActionReceiver.class);
         snoozeIntent.putExtra(NotificationActionReceiver.KEY_REQUEST_CODE, NotificationActionReceiver.REQUEST_CODE_SNOOZE);
         PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context, 100, snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
