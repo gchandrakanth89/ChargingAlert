@@ -13,6 +13,10 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.text.format.DateUtils;
 
+import com.gck.servicelib.BatteryReceiverService;
+import com.gck.servicelib.IService;
+import com.gck.servicelib.ServiceProvider;
+
 /**
  * Created by Pervacio on 27-09-2016.
  */
@@ -57,7 +61,9 @@ public class Util {
         int batteryLevel = getBatteryLevel();
         if (batteryLevel >= 98) {
             Logger.d(TAG, "Battery percent above 98 :: Starting service");
-            BatteryReceiverService.startService(App.getInstance(), BatteryReceiverService.START_NORMAL);
+            IService iService = ServiceProvider.getServiceProvider();
+            iService.startService();
+            //BatteryReceiverService.startService(App.getInstance(), BatteryReceiverService.START_NORMAL);
             return;
         }
 
