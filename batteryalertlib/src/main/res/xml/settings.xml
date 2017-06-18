@@ -6,7 +6,7 @@
         android:title="Enable Battery Alarm"/>
 
     <CheckBoxPreference
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:dependency="pref_enable"
         android:key="pref_usb_alert"
         android:title="Alert for USB Charging"
@@ -18,7 +18,6 @@
         android:title="Notification Settings">
 
         <RingtonePreference
-            android:defaultValue=""
             android:key="pref_notification_tone"
             android:ringtoneType="all"
             android:showDefault="true"
