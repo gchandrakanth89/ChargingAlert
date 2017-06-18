@@ -20,7 +20,7 @@ public class PreferenceUtils {
 
     public static boolean isUSBAlertEnabled(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPref.getBoolean(KEY_USB_ENABLE, false);
+        return sharedPref.getBoolean(KEY_USB_ENABLE, true);
     }
 
     public static String getNotificationToneUri(Context context) {

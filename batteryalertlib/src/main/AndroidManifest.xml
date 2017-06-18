@@ -17,7 +17,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".BatteryReceiverService"/>
+        <service android:name="com.gck.servicelib.BatteryReceiverService"/>
 
         <receiver android:name=".AlarmReceiver"/>
         <receiver

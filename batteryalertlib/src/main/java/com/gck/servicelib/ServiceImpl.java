@@ -1,7 +1,6 @@
 package com.gck.servicelib;
 
 import com.gck.batteryalertlib.App;
-import com.gck.batteryalertlib.BatteryReceiverService;
 
 /**
  * Created by Pervacio on 13-06-2017.
