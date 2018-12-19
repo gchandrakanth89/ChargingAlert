@@ -36,9 +36,10 @@ class NotificationUtil {
     }
 
     static Notification showForeGroundNotification(Context context){
+        createNotificationChannelForFg(context);
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder = new Notification.Builder(context, CHANNEL_ID);
+            builder = new Notification.Builder(context, FG_CHANNEL_ID);
         } else {
             builder = new Notification.Builder(context);
         }
