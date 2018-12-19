@@ -1,6 +1,7 @@
 package com.gck.servicelib;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,22 +9,23 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
-import android.os.PowerManager;
 import android.view.View;
 
 import com.gck.batteryalertlib.NotificationActionReceiver;
 import com.gck.batteryalertlib.PreferenceUtils;
 import com.gck.batteryalertlib.R;
 
-import static android.content.Context.POWER_SERVICE;
-
 /**
  * Created by Pervacio on 13-06-2017.
  */
 
 class NotificationUtil {
+
+    private static final String TAG = "NotificationUtil";
+    private static final String CHANNEL_ID = String.valueOf(100);
 
     static void cancelAllNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -45,7 +47,15 @@ class NotificationUtil {
     }
 
     static void showNotification(Context context) {
-        Notification.Builder builder = new Notification.Builder(context);
+
+        createNotificationChannel(context);
+
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(context, CHANNEL_ID);
+        } else {
+            builder = new Notification.Builder(context);
+        }
         builder.setContentTitle("Battery full");
         builder.setTicker("Battery full");
         builder.setContentText("Please disconnect the charger");
@@ -58,15 +68,18 @@ class NotificationUtil {
             builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_icon));
         }
 
-        builder.setSound(Uri.parse(PreferenceUtils.getNotificationToneUri(context)));
-        builder.setPriority(Notification.PRIORITY_HIGH);
-        builder.setLights(Color.RED, 500, 500);
-        addActionsForNotification(context, builder);
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
+            builder.setSound(Uri.parse(PreferenceUtils.getNotificationToneUri(context)));
+            builder.setLights(Color.GREEN, 500, 500);
 
-        if (PreferenceUtils.isVibrate(context)) {
-            long[] i = {500, 500, 500, 500};
-            builder.setVibrate(i);
+
+            if (PreferenceUtils.isVibrate(context)) {
+                long[] i = {500, 500, 500, 500};
+                builder.setVibrate(i);
+            }
         }
+        addActionsForNotification(context, builder);
 
         Notification notification = builder.build();
 
@@ -124,6 +137,36 @@ class NotificationUtil {
                 builder.setActions(dismissAction.build());
             }
 
+        }
+    }
+
+    private static void createNotificationChannel(Context context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = context.getString(R.string.channel_name);
+            String description = context.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build();
+            channel.setSound(Uri.parse(PreferenceUtils.getNotificationToneUri(context)), audioAttributes);
+
+            if (PreferenceUtils.isVibrate(context)) {
+                long[] i = {500, 500, 500, 500};
+                channel.setVibrationPattern(i);
+            }
+
+            channel.enableLights(true);
+            channel.setLightColor(Color.GREEN);
+
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 }

@@ -2,6 +2,8 @@
     <string name="app_name">BatteryAlertLib</string>
     <string name="notification_type_single">Single</string>
     <string name="notification_type_multiple">Multiple</string>
+    <string name="channel_name">Battery Full alert</string>
+    <string name="channel_description">Battery Full alert</string>
 
     <integer name="notification_type_single">1</integer>
     <integer name="notification_type_multiple">2</integer>
