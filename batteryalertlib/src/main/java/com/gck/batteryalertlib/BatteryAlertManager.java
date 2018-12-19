@@ -4,14 +4,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import com.gck.batterylib.scheduler.ScheduleManager;
+import com.gck.batterylib.scheduler.WorkerScheduler;
+
 /**
  * Created by Pervacio on 19-09-2016.
  */
 public class BatteryAlertManager {
 
+    private static final String TAG = "BatteryAlertManager";
     private static BatteryAlertManager instance;
+    private ScheduleManager scheduleManager;
 
     private BatteryAlertManager() {
+        scheduleManager = new WorkerScheduler();
     }
 
     public static BatteryAlertManager getInstance() {
@@ -28,7 +34,7 @@ public class BatteryAlertManager {
         packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
         if (Util.isChargerPlugged()) {
-            Util.scheduleAlarm();
+            scheduleManager.scheduleAlarm();
         }
 
     }
@@ -39,7 +45,7 @@ public class BatteryAlertManager {
         PackageManager packageManager = context.getPackageManager();
         packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
-        Util.cancelAllAlarms();
+        scheduleManager.cancelAllAlarms();
     }
 
     public boolean isEnabled() {

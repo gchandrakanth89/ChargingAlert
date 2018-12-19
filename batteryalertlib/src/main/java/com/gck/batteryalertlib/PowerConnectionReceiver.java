@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.gck.batterylib.scheduler.ScheduleManager;
+import com.gck.batterylib.scheduler.WorkerScheduler;
+
 public class PowerConnectionReceiver extends BroadcastReceiver {
     private static final String TAG = PowerConnectionReceiver.class.getSimpleName();
 
@@ -17,9 +20,11 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
         Logger.d(TAG, "" + intent.getAction());
         String action = intent.getAction();
 
+        ScheduleManager scheduleManager = new WorkerScheduler();
+
         if (action.equalsIgnoreCase(Intent.ACTION_POWER_CONNECTED)) {
             if (Util.isChargerPlugged()) {
-                Util.scheduleAlarm();
+                scheduleManager.scheduleAlarm();
                 Logger.d(TAG, "Power connected");
                 Toast.makeText(context, "Power connected", Toast.LENGTH_LONG).show();
             }
@@ -28,11 +33,11 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
             Logger.d(TAG, "Power disconnected");
             Toast.makeText(context, "Power disconnected", Toast.LENGTH_LONG).show();
 
-            Util.cancelAllAlarms();
+            scheduleManager.cancelAllAlarms();
 
         } else if (action.equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
             if (Util.isChargerPlugged()) {
-                Util.scheduleAlarm();
+                scheduleManager.scheduleAlarm();
             }
         } else {
             throw new UnsupportedOperationException("Not yet implemented");

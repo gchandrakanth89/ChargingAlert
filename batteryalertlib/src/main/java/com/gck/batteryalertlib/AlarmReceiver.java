@@ -4,6 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.gck.batterylib.scheduler.AlarmScheduler;
+import com.gck.batterylib.scheduler.ScheduleManager;
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String TAG = AlarmReceiver.class.getSimpleName();
@@ -14,6 +17,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Util.scheduleAlarm();
+        ScheduleManager scheduleManager = new AlarmScheduler();
+
+        scheduleManager.scheduleAlarm();
     }
 }
