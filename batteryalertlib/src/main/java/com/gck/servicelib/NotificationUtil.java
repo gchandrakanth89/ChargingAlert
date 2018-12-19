@@ -26,14 +26,22 @@ class NotificationUtil {
 
     private static final String TAG = "NotificationUtil";
     private static final String CHANNEL_ID = String.valueOf(100);
+    private static final String FG_CHANNEL_ID = String.valueOf(200);
+    private static final int NOTIFICATION_ID = 1000;
+    public static final int FG_NOTIFICATION_ID = 2000;
 
     static void cancelAllNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        notificationManager.cancel(NOTIFICATION_ID);
     }
 
     static Notification showForeGroundNotification(Context context){
-        Notification.Builder builder = new Notification.Builder(context);
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(context, CHANNEL_ID);
+        } else {
+            builder = new Notification.Builder(context);
+        }
         builder.setContentTitle("Battery Content");
         builder.setTicker("Battery Ticker");
         builder.setContentText("Battery content text");
@@ -95,7 +103,7 @@ class NotificationUtil {
         }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(100, notification);
+        notificationManager.notify(NOTIFICATION_ID, notification);
 
     }
 
@@ -162,6 +170,24 @@ class NotificationUtil {
 
             channel.enableLights(true);
             channel.setLightColor(Color.GREEN);
+
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private static void createNotificationChannelForFg(Context context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = context.getString(R.string.channel_name);
+            String description = context.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(FG_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
 
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this

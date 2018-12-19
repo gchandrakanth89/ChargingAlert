@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -77,7 +78,12 @@ public class BatteryReceiverService extends Service {
     static void startService(Context context, int key) {
         Intent intent = new Intent(context, BatteryReceiverService.class);
         intent.putExtra(SERVICE_KEY, key);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            context.startService(intent);
+        } else {
+            context.startForegroundService(intent);
+        }
+
     }
 
     public static void startServiceForeground(Context context) {
@@ -91,6 +97,10 @@ public class BatteryReceiverService extends Service {
         NotificationUtil.cancelAllNotifications(this);
         if (intent != null) {
             int serviceKey = intent.getIntExtra(SERVICE_KEY, START_NORMAL);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Notification notification = NotificationUtil.showForeGroundNotification(this);
+                startForeground(NotificationUtil.FG_NOTIFICATION_ID, notification);
+            }
             if (serviceKey == START_NORMAL) {
                 Logger.d(TAG, "Service started");
                 Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show();
