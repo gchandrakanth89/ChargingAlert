@@ -1,5 +1,6 @@
 package com.gck.servicelib;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -22,6 +23,7 @@ public class BatteryReceiverService extends Service {
     public static final int START_NORMAL = 100;
     public static final int START_FOR_SNOOZE = 200;
     public static final int START_FOR_DISMISS = 300;
+    public static final int START_FOREGROUND = 400;
 
     private static final String TAG = BatteryReceiverService.class.getSimpleName();
 
@@ -78,6 +80,12 @@ public class BatteryReceiverService extends Service {
         context.startService(intent);
     }
 
+    public static void startServiceForeground(Context context) {
+        Intent intent = new Intent(context, BatteryReceiverService.class);
+        intent.putExtra(SERVICE_KEY, START_FOREGROUND);
+        context.startService(intent);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationUtil.cancelAllNotifications(this);
@@ -97,6 +105,10 @@ public class BatteryReceiverService extends Service {
                 handler.sendEmptyMessageDelayed(1, notificationFrequency * DateUtils.MINUTE_IN_MILLIS);
             } else if (serviceKey == START_FOR_DISMISS) {
                 stopSelf();
+            } else if (serviceKey == START_FOREGROUND) {
+                Notification notification = NotificationUtil.showForeGroundNotification(this);
+                startForeground(500, notification);
+                Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show();
             }
         } else {
             registerReceiver(batteryReceiver, intentFilter);
@@ -112,7 +124,8 @@ public class BatteryReceiverService extends Service {
         Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
 
         handler.removeMessages(1);
-        unregisterReceiver(batteryReceiver);
+        if (broadcastRegistered)
+            unregisterReceiver(batteryReceiver);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
         super.onDestroy();

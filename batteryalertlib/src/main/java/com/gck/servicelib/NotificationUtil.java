@@ -30,6 +30,20 @@ class NotificationUtil {
         notificationManager.cancelAll();
     }
 
+    static Notification showForeGroundNotification(Context context){
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setContentTitle("Battery Content");
+        builder.setTicker("Battery Ticker");
+        builder.setContentText("Battery content text");
+        builder.setSmallIcon(R.drawable.notification_small_icon);
+        builder.setOngoing(true);
+        builder.setAutoCancel(false);
+
+        Notification notification = builder.build();
+
+        return notification;
+    }
+
     static void showNotification(Context context) {
         Notification.Builder builder = new Notification.Builder(context);
         builder.setContentTitle("Battery full");

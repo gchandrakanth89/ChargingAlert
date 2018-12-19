@@ -85,6 +85,7 @@ public class Util {
             alarmManager.setWindow(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeInterval, 2 * 60 * 2000, pendingIntent);
         }
 
+        BatteryReceiverService.startServiceForeground(App.getInstance());
 
     }
 
