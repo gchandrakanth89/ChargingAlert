@@ -23,7 +23,7 @@ public class WorkerScheduler implements ScheduleManager {
     public void scheduleAlarm() {
 
         int batteryLevel = Util.getBatteryLevel();
-        if (batteryLevel >= 80) {
+        if (batteryLevel >= 98) {
             Util.startChargingMonitorService();
             return;
         }
