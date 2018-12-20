@@ -1,12 +1,23 @@
 package com.gck.batteryalertlib;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
+
+import com.gck.servicelib.NotificationUtil;
 
 
 /**
@@ -48,8 +59,34 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             BatteryAlertManager.getInstance().enable();
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Preference notificationPreference = findPreference(PreferenceUtils.KEY_NOTIFICATION_TONE);
+            notificationPreference.setOnPreferenceClickListener(clickListener);
+
+            NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel notificationChannel = manager.getNotificationChannel(NotificationUtil.CHANNEL_ID);
+            Uri sound = notificationChannel.getSound();
+
+            Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), sound);
+            String title = ringtone.getTitle(getActivity());
+
+            notificationPreference.setSummary(title);
+
+        }
+
 
     }
+
+    private Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+            intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
+            startActivity(intent);
+            return true;
+        }
+    };
 
     private void setRingtonePreferenceSummary() {
         Preference notificationPref = findPreference(PreferenceUtils.KEY_NOTIFICATION_TONE);

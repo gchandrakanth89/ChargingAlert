@@ -22,10 +22,10 @@ import com.gck.batteryalertlib.R;
  * Created by Pervacio on 13-06-2017.
  */
 
-class NotificationUtil {
+public class NotificationUtil {
 
     private static final String TAG = "NotificationUtil";
-    private static final String CHANNEL_ID = String.valueOf(100);
+    public static final String CHANNEL_ID = String.valueOf(100);
     private static final String FG_CHANNEL_ID = String.valueOf(200);
     private static final int NOTIFICATION_ID = 1000;
     public static final int FG_NOTIFICATION_ID = 2000;

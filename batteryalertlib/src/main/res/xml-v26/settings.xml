@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_enable"
+        android:title="Enable Battery Alarm"/>
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:dependency="pref_enable"
+        android:key="pref_usb_alert"
+        android:title="Alert for USB Charging"
+        />
+
+
+    <PreferenceCategory
+        android:key="pref_key_notification_settings"
+        android:title="Notification Settings">
+
+        <Preference
+            android:key="pref_notification_tone"
+            android:showDefault="true"
+            android:summary="@string/app_name"
+            android:title="Notification tone"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notification_repeat"
+            android:title="Repeat Notification"
+            />
+        <ListPreference
+            android:defaultValue="2"
+            android:dependency="pref_notification_repeat"
+            android:dialogTitle="Repeat frequency"
+            android:entries="@array/pref_notification_frequency"
+            android:entryValues="@array/pref_notification_frequency_values"
+            android:key="pref_notification_repeat_count"
+            android:title="Repeat frequency"
+            />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
